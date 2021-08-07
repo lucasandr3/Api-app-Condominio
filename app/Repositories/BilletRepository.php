@@ -2,17 +2,29 @@
 namespace App\Repositories;
 
 use App\Models\Billet;
+use App\Models\Unit;
 
 class BilletRepository
 {
-    public function billets($data): array
+    public function billets($property): array
     {
-        if($data->input('property')) {
+        if($property) {
 
-            $billets = Billet::where('id_unit', $data->input('property'))->get();
+            $user = auth()->user();
 
-            foreach ($billets as $billetKey => $billetValue) {
-                $billets[$billetKey]['fileurl'] = asset('storage/'.$billetValue['fileurl']);
+            $unit = Unit::where('id', $property)
+                ->where('id_owner', $user['id'])
+                ->count();
+
+            if($unit > 0) {
+                $billets = Billet::where('id_unit', $property)->get();
+
+                foreach ($billets as $billetKey => $billetValue) {
+                    $billets[$billetKey]['fileurl'] = asset('storage/'.$billetValue['fileurl']);
+                }
+
+            } else {
+                return ['error' => 'Essa Unidade não é sua.'];
             }
 
         } else {

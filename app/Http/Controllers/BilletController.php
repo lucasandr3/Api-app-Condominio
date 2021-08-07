@@ -7,8 +7,9 @@ use Illuminate\Http\Request;
 
 class BilletController extends Controller
 {
-    public function getAll(Request $request, BilletRepository $billet): array
+    public function getAll(Request $request, BilletRepository $billet)
     {
-        return $billet->billets($request);
+        $property = $request->input('property');
+        return $billet->billets($property);
     }
 }
