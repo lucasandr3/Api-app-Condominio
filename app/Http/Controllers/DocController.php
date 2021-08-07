@@ -1,10 +1,12 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Repositories\DocRepository;
 
 class DocController extends Controller
 {
-    //
+    public function getAll(DocRepository $documents): array
+    {
+        return $documents->documents();
+    }
 }

@@ -2,39 +2,33 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\AuthRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Auth;
-
-use App\Models\User;
 
 class AuthController extends Controller
 {
-    public function unauthorized()
+    public function unauthorized(): string
     {
         return response()->json(['error' => 'Não Autorizado'], 401);
     }
 
-    public function register(Request $request)
+    public function register(Request $request, AuthRepository $auth): array
     {
-        $array = ['error' => ''];
+        return $auth->registerUser($request);
+    }
 
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'cpf' => 'required|digits:11|unique:users,cpf',
-            'password' => 'required',
-            'password_confirm' => 'required|same:password'
-        ]);
+    public function login(Request $request, AuthRepository $auth): array
+    {
+        return $auth->authenticateUser($request);
+    }
 
-        if(!$validator->fails()) {
+    public function validateToken(Request $request, AuthRepository $auth): array
+    {
+        return $auth->refreshToken();
+    }
 
-
-
-        } else {
-            return $array['error'] = $validator->errors()->first();
-        }
-
-        return $array;
+    public function logout(AuthRepository $auth): array
+    {
+        return $auth->logout();
     }
 }
