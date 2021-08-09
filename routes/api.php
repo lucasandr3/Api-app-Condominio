@@ -62,4 +62,9 @@ Route::middleware('auth:api')->group(function(){
     Route::get('/reservation/{id}/times', [ReservationController::class, 'getTimes']);
     Route::get('/myreservations', [ReservationController::class, 'getMyReservations']);
     Route::delete('/myreservation/{id}', [ReservationController::class, 'delMyReservation']);
+
+    // profile user
+    Route::get('/profile', [ReservationController::class, 'getProfile']);
+    Route::post('/profile/edit', [ReservationController::class, 'editProfile']);
+    Route::put('/profile/password', [ReservationController::class, 'changePassword']);
 });
