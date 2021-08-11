@@ -7,13 +7,21 @@ use Illuminate\Http\Request;
 
 class WallController extends Controller
 {
-    public function getAll(WallRepository $wall): array
+    private $wall;
+
+    public function __construct(WallRepository $wall)
     {
-        return $wall->walls();
+        $this->wall = $wall;
     }
 
-    public function like(Request $request, WallRepository $wall): array
+    public function getAll(): array
     {
-        return $wall->likeWall($request);
+        return $this->wall->walls();
+    }
+
+    public function like(Request $request): array
+    {
+        $data = $request;
+        return $this->wall->likeWall($data);
     }
 }

@@ -7,44 +7,51 @@ use Illuminate\Http\Request;
 
 class UnitController extends Controller
 {
-    public function getInfo($id, UnitRepository $unit): array
+    private $unit;
+
+    public function __construct(UnitRepository $unit)
     {
-        return $unit->unitInfo($id);
+        $this->unit = $unit;
     }
 
-    public function addPerson($id_unit, Request $request, UnitRepository $unit): array
+    public function getInfo($id): array
     {
-        $data = $request;
-        return $unit->newPerson($id_unit, $data);
+        return $this->unit->unitInfo($id);
     }
 
-    public function addVehicle($id_unit, Request $request, UnitRepository $unit): array
-    {
-        $data = $request;
-        return $unit->newVehicle($id_unit, $data);
-    }
-
-    public function addpet($id_unit, Request $request, UnitRepository $unit): array
+    public function addPerson($id_unit, Request $request): array
     {
         $data = $request;
-        return $unit->newPet($id_unit, $data);
+        return $this->unit->newPerson($id_unit, $data);
     }
 
-    public function removeperson($id_unit, Request $request, UnitRepository $unit): array
+    public function addVehicle($id_unit, Request $request): array
+    {
+        $data = $request;
+        return $this->unit->newVehicle($id_unit, $data);
+    }
+
+    public function addpet($id_unit, Request $request): array
+    {
+        $data = $request;
+        return $this->unit->newPet($id_unit, $data);
+    }
+
+    public function removeperson($id_unit, Request $request): array
     {
         $id_person = $request->input('id');
-        return $unit->delPerson($id_unit, $id_person);
+        return $this->unit->delPerson($id_unit, $id_person);
     }
 
-    public function removevehicle($id_unit, Request $request, UnitRepository $unit): array
+    public function removevehicle($id_unit, Request $request): array
     {
         $id_vehicle = $request->input('id');;
-        return $unit->delVehicle($id_unit, $id_vehicle);
+        return $this->unit->delVehicle($id_unit, $id_vehicle);
     }
 
-    public function removepet($id_unit, Request $request, UnitRepository $unit): array
+    public function removepet($id_unit, Request $request): array
     {
         $id_pet = $request->input('id');
-        return $unit->delPet($id_unit, $id_pet);
+        return $this->unit->delPet($id_unit, $id_pet);
     }
 }

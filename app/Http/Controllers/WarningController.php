@@ -7,21 +7,28 @@ use Illuminate\Http\Request;
 
 class WarningController extends Controller
 {
-    public function getMyWarnings(Request $request, WarningRepository $warning): array
+    private $warning;
+
+    public function __construct(WarningRepository $warning)
+    {
+        $this->warning = $warning;
+    }
+
+    public function getMyWarnings(Request $request): array
     {
         $property = $request->input('property');
-        return $warning->warnings($property);
+        return $this->warning->warnings($property);
     }
 
-    public function addWarningFile(Request $request, WarningRepository $warning): array
+    public function addWarningFile(Request $request): array
     {
         $data = $request;
-        return $warning->warningFile($data);
+        return $this->warning->warningFile($data);
     }
 
-    public function setWarning(Request $request, WarningRepository $warning): array
+    public function setWarning(Request $request): array
     {
         $data = $request;
-        return $warning->newWarning($data);
+        return $this->warning->newWarning($data);
     }
 }

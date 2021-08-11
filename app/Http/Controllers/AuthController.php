@@ -7,28 +7,35 @@ use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
+    private $auth;
+
+    public function __construct(AuthRepository $auth)
+    {
+        $this->auth = $auth;
+    }
+
     public function unauthorized(): string
     {
         return response()->json(['error' => 'Não Autorizado'], 401);
     }
 
-    public function register(Request $request, AuthRepository $auth): array
+    public function register(Request $request): array
     {
-        return $auth->registerUser($request);
+        return $this->auth->registerUser($request);
     }
 
-    public function login(Request $request, AuthRepository $auth): array
+    public function login(Request $request): array
     {
-        return $auth->authenticateUser($request);
+        return $this->auth->authenticateUser($request);
     }
 
-    public function validateToken(Request $request, AuthRepository $auth): array
+    public function validateToken(Request $request): array
     {
-        return $auth->refreshToken();
+        return $this->auth->refreshToken();
     }
 
-    public function logout(AuthRepository $auth): array
+    public function logout(): array
     {
-        return $auth->logout();
+        return $this->auth->logout();
     }
 }

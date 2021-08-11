@@ -5,8 +5,15 @@ use App\Repositories\DocRepository;
 
 class DocController extends Controller
 {
-    public function getAll(DocRepository $documents): array
+    private $documents;
+
+    public function __construct(DocRepository $documents)
     {
-        return $documents->documents();
+        $this->documents = $documents;
+    }
+
+    public function getAll(): array
+    {
+        return $this->documents->documents();
     }
 }
