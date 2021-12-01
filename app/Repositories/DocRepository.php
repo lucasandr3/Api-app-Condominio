@@ -1,17 +1,20 @@
 <?php
+
 namespace App\Repositories;
 
+use App\Interfaces\Repositories\DocRepositoryInterface;
 use App\Models\Doc;
 
-class DocRepository
+class DocRepository implements DocRepositoryInterface
 {
     public function documents(): array
     {
-        $docs = Doc::all();
+        $docs = Doc::all()->toArray();
 
-        foreach ($docs as $docKey => $docValue) {
-            $docs[$docKey]['fileurl'] = asset('storage/'.$docValue['fileurl']);
-        }
+        $docs = array_map(function ($doc) {
+            $doc['fileurl'] = asset('storage/' . $doc['fileurl']);
+            return $doc;
+        }, $docs);
 
         return ['error' => '', 'list' => $docs];
     }

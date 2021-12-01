@@ -2,7 +2,7 @@
 
 namespace App\Interfaces\Services;
 
-class DocServiceInterface
+interface DocServiceInterface
 {
-
+    public function getAllDocuments();
 }
